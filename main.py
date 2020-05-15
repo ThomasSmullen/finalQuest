@@ -1,9 +1,12 @@
+#File Made By Thomas Smullen
+#Tutorial From https://www.youtube.com/watch?v=XpYz-q1lxu8
+#By FreeCodeCamp.org
 import numpy as np
 
 #Global Vars
 ROW_COUNT = 6
 COLLUMN_COUNT = 7
-
+WINNING_CHAIN =4
 #Functions
 
 
@@ -29,25 +32,29 @@ def printBoard(board):
 
 def winningMove(board, piece):
     #Horizontal Locations for winning, check location and then one directly side, cont.
-    for c in range(COLLUMN_COUNT-3):
+    for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
         for r in range(ROW_COUNT):
             if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
                 return True
     #vertical Locations for winning
     for c in range(COLLUMN_COUNT):
-        for r in range(ROW_COUNT-3):
+        for r in range(ROW_COUNT-(WINNING_CHAIN-1)):
             if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
                 return True
     #Positive diag Slopes for winning
-    for c in range(COLLUMN_COUNT-3):
-        for r in range(ROW_COUNT-3):
+    for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
+        for r in range(ROW_COUNT-(WINNING_CHAIN-1)):
             if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
                 return True
     #Negative diag slopes for winning
-    for c in range(COLLUMN_COUNT-3):
+    # for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
+    #     for r in range(ROW_COUNT-(WINNING_CHAIN-1)):
+    #         if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
+    #             return True
+    for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
         for r in range(ROW_COUNT):
-            if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
-                return True
+            pass
+            
 board = createBoard()
 gameOver = False
 turn = 0
