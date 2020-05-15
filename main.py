@@ -31,29 +31,36 @@ def printBoard(board):
     print(np.flip(board, 0))
 
 def winningMove(board, piece):
-    #Horizontal Locations for winning, check location and then one directly side, cont.
+    #Horizontal Locations for winning, check all possible locations where a chain can start
+    # and then one directly next to that location, cont.
     for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
         for r in range(ROW_COUNT):
             if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
                 return True
-    #vertical Locations for winning
+    #vertical Locations for winning, same as above but increase row instead of col
     for c in range(COLLUMN_COUNT):
         for r in range(ROW_COUNT-(WINNING_CHAIN-1)):
             if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
                 return True
-    #Positive diag Slopes for winning
+    #Positive diag Slopes for winning, increase both row and col
     for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
         for r in range(ROW_COUNT-(WINNING_CHAIN-1)):
             if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
                 return True
-    #Negative diag slopes for winning
-    # for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
-    #     for r in range(ROW_COUNT-(WINNING_CHAIN-1)):
-    #         if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
-    #             return True
+    #Negative diag slopes for winning, increase col, reduce row
     for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
-        for r in range(ROW_COUNT):
-            pass
+        for r in range((WINNING_CHAIN-1),ROW_COUNT):
+            if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
+                return True
+    #Was attempting to make a check for any value of chains, not just 4, currently not working.
+    # for c in range(COLLUMN_COUNT-(WINNING_CHAIN-1)):
+    #     for r in range(ROW_COUNT):
+    #         for w in range(WINNING_CHAIN):
+    #            if board[r][c] == piece and board[r][c+w] == piece and board[r][c+w] == piece and board[r][c+w] == piece:
+    #                 return True
+
+
+            
             
 board = createBoard()
 gameOver = False
@@ -78,7 +85,7 @@ while not gameOver:
 
     #P2 Input
     
-    else:
+    elif turn == 1:
         col = int(input("P2, Make Your Selection (0-6)"))
         if isValidLocation(board, col):
             row = getNextOpenRow(board, col)
@@ -88,4 +95,13 @@ while not gameOver:
                 print("Player 2 Wins")
                 gameOver = True
         turn += 1
-        turn = turn % 2
+    elif turn == 2:
+        col = int(input("P3, Make Your Selection (0-6)"))
+        if isValidLocation(board, col):
+            row = getNextOpenRow(board, col)
+            dropPiece(board, row, col, 3)
+            printBoard(board)
+            if winningMove(board, 3):
+                print("Player 3 Wins")
+                gameOver = True
+        turn = 0
