@@ -27,6 +27,27 @@ def getNextOpenRow(board, col):
 def printBoard(board):
     print(np.flip(board, 0))
 
+def winningMove(board, piece):
+    #Horizontal Locations for winning, check location and then one directly side, cont.
+    for c in range(COLLUMN_COUNT-3):
+        for r in range(ROW_COUNT):
+            if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
+                return True
+    #vertical Locations for winning
+    for c in range(COLLUMN_COUNT):
+        for r in range(ROW_COUNT-3):
+            if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
+                return True
+    #Positive diag Slopes for winning
+    for c in range(COLLUMN_COUNT-3):
+        for r in range(ROW_COUNT-3):
+            if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
+                return True
+    #Negative diag slopes for winning
+    for c in range(COLLUMN_COUNT-3):
+        for r in range(ROW_COUNT):
+            if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
+                return True
 board = createBoard()
 gameOver = False
 turn = 0
@@ -42,6 +63,9 @@ while not gameOver:
             row = getNextOpenRow(board, col)
             dropPiece(board, row, col, 1)
             printBoard(board)
+            if winningMove(board, 1):
+                print("Player 1 Wins")
+                gameOver = True
         turn += 1
     
 
@@ -53,5 +77,8 @@ while not gameOver:
             row = getNextOpenRow(board, col)
             dropPiece(board, row, col, 2)
             printBoard(board)
+            if winningMove(board, 2):
+                print("Player 2 Wins")
+                gameOver = True
         turn += 1
         turn = turn % 2
