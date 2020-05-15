@@ -6,7 +6,7 @@ import numpy as np
 #Global Vars
 ROW_COUNT = 6
 COLLUMN_COUNT = 7
-WINNING_CHAIN =4
+WINNING_CHAIN = 4
 #Functions
 
 
@@ -29,6 +29,19 @@ def getNextOpenRow(board, col):
 
 def printBoard(board):
     print(np.flip(board, 0))
+
+#Ask player for input, use all functions to determine the next boardstate
+
+def playerTurn(board,player):
+    col = int(input("P"+str(player) + " Make Your Selection (0-" + str(COLLUMN_COUNT-1)+")"))
+    if isValidLocation(board, col):
+        row = getNextOpenRow(board, col)
+        dropPiece(board, row, col, player)
+        printBoard(board)
+        if winningMove(board, player):
+            print("Player" + str(player) + "Wins")
+            gameOver = True
+            
 
 def winningMove(board, piece):
     #Horizontal Locations for winning, check all possible locations where a chain can start
@@ -68,40 +81,16 @@ turn = 0
 #Main Game Loop
 
 while not gameOver:
-    #P1 Input
-    #Ask player for input in what collumn, then change turn. if turn = 1 going in, then it will be 0 going out
-    #and Vice-versa due to modulo function
+#P1 Input
+    #Call function for player turn with the player number
     if turn == 0:
-        col = int(input("P1, Make Your Selection (0-6)"))
-        if isValidLocation(board, col):
-            row = getNextOpenRow(board, col)
-            dropPiece(board, row, col, 1)
-            printBoard(board)
-            if winningMove(board, 1):
-                print("Player 1 Wins")
-                gameOver = True
-        turn += 1
+        playerTurn(board,1)
+        if gameOver:
+            break
+        else:
+            turn += 1
+ #P2 Input
     
-
-    #P2 Input
-    
-    elif turn == 1:
-        col = int(input("P2, Make Your Selection (0-6)"))
-        if isValidLocation(board, col):
-            row = getNextOpenRow(board, col)
-            dropPiece(board, row, col, 2)
-            printBoard(board)
-            if winningMove(board, 2):
-                print("Player 2 Wins")
-                gameOver = True
-        turn += 1
-    elif turn == 2:
-        col = int(input("P3, Make Your Selection (0-6)"))
-        if isValidLocation(board, col):
-            row = getNextOpenRow(board, col)
-            dropPiece(board, row, col, 3)
-            printBoard(board)
-            if winningMove(board, 3):
-                print("Player 3 Wins")
-                gameOver = True
+    if turn == 1:
+        playerTurn(board, 2)
         turn = 0
